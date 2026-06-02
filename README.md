@@ -13,7 +13,7 @@
   <h3 align="center">WSL Path Manager</h3>
 
   <p align="center">
-    Version: 0.0.1
+    Version: 0.0.2
     <br />
     An elegant desktop application to seamlessly manage WSL executable paths in Windows.
     <br />
@@ -105,6 +105,7 @@ To get a local copy up and running, follow these simple steps.
 3. Click "Scan Paths" to discover available tools and executables within the selected WSL distribution.
 4. Select the specific tools you wish to make available in the Windows environment.
 5. Click "Save & Apply Settings" to generate the appropriate shims and automatically inject them into your Windows PATH.
+6. Check the Settings page to toggle System Tray integration and Auto-Startup features.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -112,8 +113,9 @@ To get a local copy up and running, follow these simple steps.
 ## Roadmap
 
 - [x] Initial release (v0.0.1)
-- [ ] Add support for custom tool paths
-- [ ] Implement system tray support
+- [x] Add support for custom tool paths (v0.0.2)
+- [x] Implement system tray support (v0.0.2)
+- [x] Implement run on system startup (v0.0.2)
 - [ ] Multi-language support
 
 See the [open issues](https://github.com/NextXierra/wslpathmanager/issues) for a full list of proposed features (and known issues).
