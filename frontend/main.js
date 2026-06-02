@@ -173,4 +173,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.classList.add('light');
         document.body.classList.remove('dark');
     }
+
+    const autoStartToggle = document.getElementById('autoStartToggle');
+    try {
+        const isEnabled = await App.GetAutoStartStatus();
+        autoStartToggle.checked = isEnabled;
+    } catch (err) {
+        console.error("Failed to get auto start status", err);
+    }
+
+    autoStartToggle.addEventListener('change', async (e) => {
+        try {
+            await App.ToggleAutoStart(e.target.checked);
+        } catch (err) {
+            console.error("Failed to toggle auto start", err);
+            // Revert on failure
+            e.target.checked = !e.target.checked;
+        }
+    });
+
+    const trayToggle = document.getElementById('trayToggle');
+    try {
+        const isTrayEnabled = await App.GetTraySetting();
+        trayToggle.checked = isTrayEnabled;
+    } catch (err) {
+        console.error("Failed to get tray setting", err);
+    }
+
+    trayToggle.addEventListener('change', async (e) => {
+        try {
+            await App.ToggleTraySetting(e.target.checked);
+        } catch (err) {
+            console.error("Failed to toggle tray setting", err);
+            e.target.checked = !e.target.checked;
+        }
+    });
 });

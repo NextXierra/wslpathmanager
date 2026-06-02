@@ -7,12 +7,15 @@ import (
 	"syscall"
 )
 
+// WslService provides interactions with the Windows Subsystem for Linux (WSL).
 type WslService struct{}
 
+// NewWslService creates a new instance of WslService.
 func NewWslService() *WslService {
 	return &WslService{}
 }
 
+// GetDistros returns a list of installed WSL distributions.
 func (s *WslService) GetDistros() ([]WslDistro, error) {
 	allDistrosOutput := s.runWslCommand("--list", "--quiet")
 	allList := s.parseWslList(allDistrosOutput)
@@ -26,6 +29,7 @@ func (s *WslService) GetDistros() ([]WslDistro, error) {
 	return result, nil
 }
 
+// ScanPaths checks for the presence of the given tools inside a specific WSL distribution.
 func (s *WslService) ScanPaths(distroName string, toolsToScan []string) ([]SelectableTool, error) {
 	result := []SelectableTool{}
 

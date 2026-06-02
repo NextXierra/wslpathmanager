@@ -1,19 +1,22 @@
 package backend
 
 import (
+	"golang.org/x/sys/windows/registry"
 	"os"
 	"strings"
 	"syscall"
 	"unsafe"
-	"golang.org/x/sys/windows/registry"
 )
 
+// PathInjectorService handles modifications to the Windows system PATH environment variable.
 type PathInjectorService struct{}
 
+// NewPathInjectorService creates a new instance of PathInjectorService.
 func NewPathInjectorService() *PathInjectorService {
 	return &PathInjectorService{}
 }
 
+// InjectPath safely adds the specified directories to the Windows User PATH.
 func (s *PathInjectorService) InjectPath(dirsToInject []string) error {
 	return s.modifyPath(func(currentEntries []string) []string {
 		toAdd := []string{}
@@ -33,6 +36,7 @@ func (s *PathInjectorService) InjectPath(dirsToInject []string) error {
 	})
 }
 
+// RemovePath safely removes the specified directories from the Windows User PATH.
 func (s *PathInjectorService) RemovePath(dirsToRemove []string) error {
 	return s.modifyPath(func(currentEntries []string) []string {
 		cleaned := []string{}
@@ -65,10 +69,10 @@ func (s *PathInjectorService) modifyPath(modifier func([]string) []string) error
 	}
 
 	currentEntries := strings.Split(currentPath, ";")
-	
+
 	newEntries := modifier(currentEntries)
 	newPath := strings.Join(newEntries, ";")
-	
+
 	if currentPath != newPath {
 		err = key.SetStringValue("PATH", newPath)
 		if err != nil {
