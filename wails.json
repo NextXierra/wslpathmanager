@@ -1,0 +1,10 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "WSL Path Manager",
+  "outputfilename": "wslpathmanager-go",
+  "frontend:dir": "frontend",
+  "author": {
+    "name": "NextXierra",
+    "email": "2411016110002@mhs.ulm.ac.id"
+  }
+}
