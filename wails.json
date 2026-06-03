@@ -1,10 +1,18 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
   "name": "WSL Path Manager",
-  "outputfilename": "wslpathmanager-go",
+  "outputfilename": "wslpathmanager",
   "frontend:dir": "frontend",
   "author": {
     "name": "NextXierra",
     "email": "2411016110002@mhs.ulm.ac.id"
+  },
+  "version": "0.0.2",
+  "info": {
+    "productName": "WSL Path Manager",
+    "productVersion": "0.0.2",
+    "companyName": "NextXierra",
+    "copyright": "Copyright (c) 2025 NextXierra",
+    "comments": "Manage WSL executable paths in Windows"
   }
 }
