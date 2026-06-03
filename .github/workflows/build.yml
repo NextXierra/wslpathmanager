@@ -1,0 +1,86 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [main, feature/windows-installer]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            filename: wslpathmanager-amd64.exe
+          - arch: arm64
+            filename: wslpathmanager-arm64.exe
+
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Add Go/bin to PATH
+        run: echo "$env:USERPROFILE/go/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Build ${{ matrix.arch }}
+        run: wails build --target windows/${{ matrix.arch }} --nsis
+        env:
+          CGO_ENABLED: 1
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wslpathmanager-${{ matrix.arch }}-installer
+          path: bin/*-${{ matrix.arch }}-setup.exe
+          retention-days: 14
+
+  build-archive:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Add Go/bin to PATH
+        run: echo "$env:USERPROFILE/go/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Build archive (no nsis)
+        run: wails build --target windows/amd64
+        env:
+          CGO_ENABLED: 1
+
+      - name: Upload standalone exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: wslpathmanager-standalone
+          path: bin/wslpathmanager.exe
+          retention-days: 14
